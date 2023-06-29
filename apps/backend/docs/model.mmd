@@ -1,0 +1,69 @@
+classDiagram
+  class User {
+    String id
+    String name
+  }
+
+%%  class Organization {
+%%    String id
+%%    String name
+%%  }
+
+  class Form {
+    String id
+    String name
+  }
+
+  class Presentation {
+    String id
+    String name 
+  }
+
+  class Section {
+    String id
+    String name 
+  }
+
+  class SectionItem {
+    String id
+  }
+
+  class Question {
+    String id
+    String text
+    String description
+  }
+
+  class QuestionTypeKind {
+    <<enumeration>>
+    INT
+    FLOAT
+    SCALE
+    BOOLEAN
+  }
+
+  class QuestionType {
+    String id
+    String name
+    QuestionTypeKind kind
+  }
+
+  class QuestionTypeBoolean {
+  }
+
+  class QuestionTypeNumber {
+    Float min
+    Float max
+    Float step
+  }
+
+  QuestionType -- Question
+  QuestionType <|-- QuestionTypeBoolean
+  QuestionType <|-- QuestionTypeNumber
+
+  Form o-- User
+  Form *-- Question
+  Form *-- Presentation
+  Presentation *-- Section
+  Section *-- SectionItem
+  SectionItem o-- Question

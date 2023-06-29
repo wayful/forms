@@ -1,0 +1,130 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://formed:formed@localhost:5432/formed"
+}
+
+generator prisma_client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["clientExtensions"]
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+model User {
+  id    String @id @unique @default(cuid())
+  email String @unique
+  name  String
+
+  forms Form[]
+  // organizations   UserOnOrganization[]
+}
+
+// model Organization {
+//   id              String        @id @unique @default(cuid())
+//   name            String
+
+//   users           UserOnOrganization[]
+// }
+
+// model UserOnOrganization {
+//   user            User          @relation(fields: [userId], references: [id])
+//   userId          String
+//   organization    Organization  @relation(fields: [organizationId], references: [id])
+//   organizationId  String
+
+//   @@id([userId, organizationId])
+// }
+
+model Form {
+  id   String @id @unique @default(cuid())
+  name String
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
+
+  questions Question[]
+}
+
+model Question {
+  id          String @id @unique @default(cuid())
+  text        String
+  required    Boolean
+  
+  type        QuestionType @relation(fields: [typeId], references: [id])
+  typeId      String
+
+  form        Form @relation(fields: [formId], references: [id])
+  formId      String
+}
+
+enum QuestionTypeKind {
+  Number
+  String
+  Boolean
+  Options
+}
+
+model QuestionType {
+  id            String @id @unique @default(cuid())
+  name          String
+  kind          QuestionTypeKind
+
+  number        QuestionTypeNumber? @relation(fields: [numberId], references: [id])
+  numberId      String?
+
+  string        QuestionTypeString? @relation(fields: [stringId], references: [id])
+  stringId      String?
+
+  boolean       QuestionTypeBoolean? @relation(fields: [booleanId], references: [id])
+  booleanId     String?
+
+  options       QuestionTypeOptions? @relation(fields: [optionsId], references: [id])
+  optionsId     String?
+
+  questions     Question[]
+}
+
+model QuestionTypeBoolean {
+  id            String @id @unique @default(cuid())
+  trueLabel     String
+  falseLabel    String
+  questionType  QuestionType[]
+}
+
+model QuestionTypeNumber {
+  id            String @id @unique @default(cuid())
+  min           Float?
+  max           Float?
+  step          Float?
+
+  questionType QuestionType[]
+}
+
+model QuestionTypeString {
+  id            String @id @unique @default(cuid())
+  minLength     Int?
+  maxLength     Int?
+  regex         String?
+
+  questionType QuestionType[]
+}
+
+model QuestionTypeOptions {
+  id            String @id @unique @default(cuid())
+  minOptions    Int?
+  maxOptions    Int?
+  options       QuestionTypeOptionsStringOption[]
+
+  questionType  QuestionType[]
+}
+
+model QuestionTypeOptionsStringOption {
+  id                       String                  @id @unique @default(cuid())
+  label                    String
+  value                    String
+
+  questionTypeOptions    QuestionTypeOptions?  @relation(fields: [questionTypeOptionsId], references: [id])
+  questionTypeOptionsId  String?
+}

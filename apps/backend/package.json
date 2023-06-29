@@ -1,0 +1,29 @@
+{
+  "name": "@formed/backend",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --transpile-only --no-notify src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@pothos/core": "^3.29.0",
+    "@pothos/plugin-prisma": "^3.47.1",
+    "@pothos/plugin-prisma-utils": "^0.8.0",
+    "@prisma/client": "^4.4.0",
+    "graphql": "^16.6.0",
+    "graphql-yoga": "^3.8.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node-lts-strictest": "^18.12.0",
+    "@types/node": "^18.15.00",
+    "prisma": "^4.4.0",
+    "prisma-generator-pothos-codegen": "^0.5.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  }
+}
