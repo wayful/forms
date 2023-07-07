@@ -25,18 +25,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "framer-motion": "^10.12.0",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
     "react-hook-form": "^7.43.9"
   },
   "peerDependencies": {
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
     "react-hook-form": "^7.43.9"
   },
   "devDependencies": {
@@ -44,7 +48,7 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react-swc": "^3.3.0",
-    "typescript": "^4.9.3",
+    "typescript": "^5.0.4",
     "vite": "^4.3.0",
     "vite-plugin-dts": "^2.3.0"
   }

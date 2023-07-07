@@ -16,13 +16,14 @@ interface FormProps extends UseFormProps, Omit<HTMLChakraProps<"form">, keyof Us
   _submitting?: StyleProps;
   _submitSuccessful?: StyleProps;
 }
-
+// @ts-ignore
 export const Form = forwardRef<FormProps, 'form'>(({ _valid, _dirty, _loading, _validating, _submitted, _submitting, _submitSuccessful, children, ...props }: FormProps, ref) => {
   const formContext = useForm(props)
   const { reset, formState, handleSubmit } = formContext
   const { onError, onSubmit, defaultValues, className, ...rest } = props
     
   useEffect(() => reset(defaultValues), [reset, defaultValues])
+  // @ts-ignore
   useImperativeHandle(ref, () => ({ submit: handleSubmit(onSubmit, onError) }))
 
   const dataFormState = [
