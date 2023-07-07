@@ -1,2 +1,2 @@
 export * from './FormListPage';
-export * from './FormDetailPage';
+export * from './FormEditPage';

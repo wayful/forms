@@ -18,14 +18,15 @@ export enum FormStatus {
 
 // Section
 
-interface ISection {
+export interface ISection {
   id: string;
+  name: string;
   questions: IQuestion[];
 }
 
 // Question
 
-interface IQuestion {
+export interface IQuestion {
   id: string;
   text: string;
   required: boolean;

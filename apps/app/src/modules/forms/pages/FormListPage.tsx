@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { FaChevronDown, FaPlus } from 'react-icons/fa';
-import { Button, Card, CardBody, CardFooter, CardHeader, Container, Flex, HStack, Heading, Icon, Input, Menu, MenuButton, MenuItem, MenuList, Spacer, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Container, Icon, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
+import { Page } from "~/components";
+import { FormList } from "../components";
 import { forms } from "../../../form/data";
-import { Page, TopBar } from "~/components";
-import { FormList, FormTable } from "../components";
-
 
 const SortByMenu = () => (
   <Menu>
@@ -22,9 +21,7 @@ const SortByMenu = () => (
   </Menu>
 )
 
-
-
-export const FormListPage2 = () => {  
+export const FormListPage = () => {  
   return (
     <Page pt='48px'>
       <Container maxWidth='2xl'>
@@ -44,11 +41,11 @@ export const FormListPage2 = () => {
   );
 }
 
-export const FormListPage = () => (
-  <Flex width='100%' minHeight='100%' direction='column'>
-    <TopBar backTo='..'>
-      <Input placeholder="Search" bg='white' />
-    </TopBar>
-    <FormTable />
-  </Flex>
-)
+// export const FormListPage = () => (
+//   <Flex width='100%' minHeight='100%' direction='column'>
+//     <TopBar backTo='..'>
+//       <Input placeholder="Search" bg='white' />
+//     </TopBar>
+//     <FormTable />
+//   </Flex>
+// )

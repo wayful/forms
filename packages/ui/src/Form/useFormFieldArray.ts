@@ -7,6 +7,8 @@ export interface UseFormFieldArrayProps {
   name: string;
 }
 
+const map = new Map<string, any>();
+
 export const useFormFieldArray = ({ name: fieldName, ...rest }: UseFormFieldArrayProps) => {
   const formFieldPathContext = useFormFieldPathContext();
   const { control } = useFormContext();
@@ -18,8 +20,14 @@ export const useFormFieldArray = ({ name: fieldName, ...rest }: UseFormFieldArra
     control,
   });
 
+  if(map.has(name)) {
+    map.set(name, fieldArray)
+  }
+
+  console.log(map.get(name))
+  
   return {
     name,
-    ...fieldArray
+    ...(map.get(name))
   };
 }

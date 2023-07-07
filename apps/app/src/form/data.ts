@@ -9,6 +9,7 @@ export const forms: IForm[] = [{
   updatedDate: new Date(),
   sections: [{
     id: 'section:1:1',
+    name: 'Default Section',
     questions: []
   }],
 }, {
@@ -20,6 +21,7 @@ export const forms: IForm[] = [{
   updatedDate: new Date(),
   sections: [{
     id: 'section:1:1',
+    name: 'Default Section',
     questions: []
   }],
 }, {
@@ -31,6 +33,7 @@ export const forms: IForm[] = [{
   updatedDate: new Date(),
   sections: [{
     id: 'section:1:1',
+    name: 'Default Section',
     questions: []
   }],
 }, {
@@ -42,6 +45,7 @@ export const forms: IForm[] = [{
   updatedDate: new Date(),
   sections: [{
     id: 'section:1:1',
+    name: 'Default Section',
     questions: []
   }],
 }, {
@@ -53,6 +57,7 @@ export const forms: IForm[] = [{
   updatedDate: new Date(),
   sections: [{
     id: 'section:1:1',
+    name: 'Default Section',
     questions: []
   }],
 }];

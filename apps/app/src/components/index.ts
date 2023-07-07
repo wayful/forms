@@ -1,3 +1,4 @@
+export * from './Logo';
 export * from './Page';
 export * from './NavBar';
 export * from './TopBar';

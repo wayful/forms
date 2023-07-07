@@ -19,12 +19,12 @@ interface FormFieldArrayProps<T> extends UseFormFieldArrayProps {
 export const FormFieldArray = <T,>({ children, ...props }: FormFieldArrayProps<T>) => {
   const fieldArray = useFormFieldArray(props);
 
-  const fields = fieldArray.fields.map((field, index) => ({
-    key: field.id,
-    data: field as T,
-    path: `${fieldArray.name}.${index}`,
-    remove: () => fieldArray.remove(index),
-  }));
+  // const fields = fieldArray.fields.map((field, index) => ({
+  //   key: field.id,
+  //   data: field as T,
+  //   path: `${fieldArray.name}.${index}`,
+  //   remove: () => fieldArray.remove(index),
+  // }));
 
   // console.log(children)
   // Children.map(children, (child, i) => console.log(i, typeof child));
@@ -38,7 +38,7 @@ export const FormFieldArray = <T,>({ children, ...props }: FormFieldArrayProps<T
           ? child(fields, fieldArray)
           : child
       )} */}
-      {children(fields, fieldArray)}
+      {children(fieldArray.fields, fieldArray)}
     </>
   );
 

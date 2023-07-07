@@ -9,6 +9,13 @@ const config: ThemeConfig = {
 
 const theme = extendTheme({
   config,
+  styles: {
+    global: {
+      body: {
+        bg: 'gray.100'
+      },
+    },
+  },
   colors: {
     gray: {
       50: '#F7FAFC',
