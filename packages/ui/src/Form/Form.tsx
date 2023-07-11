@@ -1,13 +1,12 @@
-import React, { forwardRef, useEffect, useImperativeHandle } from 'react'
-import { chakra, SystemStyleObject, StyleProps, HTMLChakraProps } from '@chakra-ui/react'
 import { cx } from "@chakra-ui/shared-utils"
+import { useFormContext } from 'react-hook-form';
+import { useImperativeHandle, useMemo, forwardRef } from 'react'
+import { chakra, StyleProps, SystemStyleObject, HTMLChakraProps } from '@chakra-ui/react'
 
-import { useForm, FormProvider, FormContext, UseFormProps } from './useForm'
-
-interface FormProps extends UseFormProps, Omit<HTMLChakraProps<"form">, keyof UseFormProps | 'children'> {
+interface FormProps extends HTMLChakraProps<'form'> {
   onError?: () => void,
   onSubmit: (data: any) => void,
-  children: React.ReactNode | ((context: FormContext) => React.ReactNode),
+  children: React.ReactNode | React.ReactNode[];
   _valid?: StyleProps;
   _dirty?: StyleProps;
   _loading?: StyleProps;
@@ -16,17 +15,26 @@ interface FormProps extends UseFormProps, Omit<HTMLChakraProps<"form">, keyof Us
   _submitting?: StyleProps;
   _submitSuccessful?: StyleProps;
 }
-// @ts-ignore
-export const Form = forwardRef<FormProps, 'form'>(({ _valid, _dirty, _loading, _validating, _submitted, _submitting, _submitSuccessful, children, ...props }: FormProps, ref) => {
-  const formContext = useForm(props)
-  const { reset, formState, handleSubmit } = formContext
-  const { onError, onSubmit, defaultValues, className, ...rest } = props
-    
-  useEffect(() => reset(defaultValues), [reset, defaultValues])
-  // @ts-ignore
-  useImperativeHandle(ref, () => ({ submit: handleSubmit(onSubmit, onError) }))
 
-  const dataFormState = [
+export const Form = forwardRef<'form', FormProps>(({
+  onError,
+  onSubmit,
+  children,
+  _valid,
+  _dirty,
+  _loading,
+  _validating,
+  _submitted,
+  _submitting,
+  _submitSuccessful,
+  className,
+  ...rest
+}: FormProps, ref) => {
+  const { formState, handleSubmit } = useFormContext();
+  
+  // useImperativeHandle(ref, () => ({ aa: () => {} }), []);
+
+  const dataFormState = useMemo(() => ([
     formState.isValid ? 'valid' : '',
     formState.isDirty ? 'dirty' : '',
     formState.isLoading ? 'loading' : '',
@@ -34,9 +42,9 @@ export const Form = forwardRef<FormProps, 'form'>(({ _valid, _dirty, _loading, _
     formState.isSubmitted ? 'submitted' : '',
     formState.isSubmitting ? 'submitting' : '',
     formState.isSubmitSuccessful ? 'submitSuccessful' : '',
-  ].join(' ').trim();
+  ].join(' ').trim()), [formState]);
 
-  const sx: SystemStyleObject = {
+  const sx: SystemStyleObject = useMemo(() => ({
     display: 'contents',
     ...(_valid ? { '&[data-form-state*="valid"]': _valid } : {}),
     ...(_dirty ? { '&[data-form-state*="dirty"]': _dirty } : {}),
@@ -45,20 +53,18 @@ export const Form = forwardRef<FormProps, 'form'>(({ _valid, _dirty, _loading, _
     ...(_submitted ? { '&[data-form-state*="submitted"]': _submitted } : {}),
     ...(_submitting ? { '&[data-form-state*="submitting"]': _submitting } : {}),
     ...(_submitSuccessful ? { '&[data-form-state*="submitSuccessful"]': _submitSuccessful } : {}),
-  };
+  }), [_valid, _dirty, _loading, _validating, _submitted, _submitting, _submitSuccessful]);
 
   return (
-    <FormProvider value={formContext}>
-      <chakra.form
-        ref={ref}
-        {...rest}
-        sx={sx}
-        data-form-state={dataFormState} 
-        className={cx("formed-form", className)}
-        onSubmit={handleSubmit(onSubmit, onError)}>
-        {typeof(children) === 'function' ? children(formContext) : children}
-      </chakra.form>
-    </FormProvider>
+    <chakra.form
+      ref={ref}
+      {...rest}
+      sx={sx}
+      data-form-state={dataFormState}
+      className={cx("formed-form", className)}
+      onSubmit={handleSubmit(onSubmit, onError)}>
+      {children}
+    </chakra.form>
   )
 })
 

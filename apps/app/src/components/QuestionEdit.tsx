@@ -1,8 +1,7 @@
 import { useCallback } from "react";
-import { Form, FormField, FormFieldObject } from "@formed/ui";
+import { Form, FormField } from "@formed/ui";
 import { Button, Divider, HStack, Input, Stack, StackProps, Switch } from "@chakra-ui/react";
 
-import { Question, QuestionType, QuestionTypeKind } from "../types";
 import { QuestionTypeSelect } from "./QuestionTypeSelect";
 
 
@@ -80,7 +79,7 @@ export const QuestionEdit = ({ onRemove, ...props }: QuestionEditProps) => {
 
       <Divider />
 
-      <FormFieldObject name='type'>
+      {/* <FormFieldObject name='type'>
         {(type: QuestionType) => {
           switch (type.kind) {
             case QuestionTypeKind.Number:
@@ -93,7 +92,7 @@ export const QuestionEdit = ({ onRemove, ...props }: QuestionEditProps) => {
               return <QuestionTypeOptionsEdit /> 
           }
         }}
-      </FormFieldObject>
+      </FormFieldObject> */}
     </Stack>
   );
 }

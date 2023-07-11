@@ -1,8 +1,6 @@
-import { createContext } from "@chakra-ui/react-context"
-import { ValidationRule } from 'react-hook-form'
+import { ValidationRule, useFormContext } from 'react-hook-form'
 
-import { useFormContext } from './useForm';
-import { useFormFieldPathContext } from "./useFormFieldPath";
+import { useFormFragmentContext } from './useFormFragmentContext';
 
 export interface UseFormFieldProps {
   name: string;
@@ -17,8 +15,10 @@ export interface UseFormFieldProps {
 }
 
 export const useFormField = ({ name: fieldName, isRequired = false, isControlled, valueAs, min, max, minLength, maxLength, ...rest }: UseFormFieldProps) => {
-  const formFieldPathContext = useFormFieldPathContext();
-  const { register, control, formState: { errors } } = useFormContext()
+  const fragment = useFormFragmentContext();
+  const { register, control, formState: { errors } } = useFormContext();
+  
+  const name = fragment ? `${fragment.path}.${fieldName}` : fieldName;
 
   const rules = {
     required: isRequired,
@@ -28,8 +28,6 @@ export const useFormField = ({ name: fieldName, isRequired = false, isControlled
     minLength,
     maxLength
   }
-
-  const name = formFieldPathContext ? `${formFieldPathContext.path}.${fieldName}` : fieldName
 
   const error = errors[name];
 

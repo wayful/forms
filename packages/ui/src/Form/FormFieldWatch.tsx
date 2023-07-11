@@ -1,33 +1,15 @@
-import { Children, cloneElement } from 'react'
+import React from 'react';
 
-import { FormFieldPath } from './FormFieldPath';
-import { UseFormFieldArrayProps, useFormFieldArray } from './useFormFieldArray';
-import { useFormContext } from '.';
-import { useWatch } from 'react-hook-form';
+import { useFormFieldWatch, UseFormFieldWatchProps } from './useFormFieldWatch';
 
-interface Field {
-  key: string,
-  path: string,
-  data: unknown;
-  remove: () => void,
+interface FormFieldWatchProps extends UseFormFieldWatchProps {
+  children: <T>(watch: T) => React.ReactNode | React.ReactNode[];
 }
 
-// type Foo = React.ReactNode | ((fields: Field[], rest: any) => React.ReactNode | React.ReactNode[])
+export const FormFieldWatch = ({ children, ...rest }: FormFieldWatchProps) => {
+  const watch = useFormFieldWatch(rest);
 
-interface FormFieldWatchProps extends UseFormFieldArrayProps {
-  path: string;
-  children: (field: any) => React.ReactNode;
-}
-
-export const FormFieldWatch = ({ children, path, ...props }: FormFieldWatchProps) => {
-  const { control } = useFormContext();
-  const field = useWatch({ control, name: path });
-  return (
-    <>
-      {children(field)}
-    </>
-  );
-
+  return <>{children(watch)}</>
 }
 
 export default FormFieldWatch;

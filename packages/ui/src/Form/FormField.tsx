@@ -2,7 +2,7 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 import { Flex, Text, FormLabel, FormControl, FormControlProps, FormErrorMessage } from '@chakra-ui/react'
 
-import { UseFormFieldProps, useFormField } from './useFormField';
+import { useFormField, UseFormFieldProps } from './useFormField';
 
 interface FormFieldProps extends FormControlProps, UseFormFieldProps {
   name: string;

@@ -1,4 +1,4 @@
-import { FormStatus, IForm } from "../types";
+import { FormStatus, IForm, QuestionTypeKind } from "../types";
 
 export const forms: IForm[] = [{
   id: '1',
@@ -9,8 +9,17 @@ export const forms: IForm[] = [{
   updatedDate: new Date(),
   sections: [{
     id: 'section:1:1',
-    name: 'Default Section',
-    questions: []
+    name: 'Default Section aaa',
+    questions: [{
+      id: 'question:1',
+      text: 'Question 1',
+      type: {
+        kind: QuestionTypeKind.Number,
+        min: 0,
+        max: 10,
+        step: 1,
+      }
+    }]
   }],
 }, {
   id: '2',

@@ -1,33 +1,23 @@
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, UseFieldArrayProps } from "react-hook-form";
 
-import { useFormContext } from "./useForm";
-import { useFormFieldPathContext } from "./useFormFieldPath";
+import { useFormFragmentContext } from "./useFormFragmentContext";
 
-export interface UseFormFieldArrayProps {
+export interface UseFormFieldArrayProps extends UseFieldArrayProps {
   name: string;
 }
 
-const map = new Map<string, any>();
+export const useFormFieldArray = (props: UseFormFieldArrayProps) => {
+  const fragment = useFormFragmentContext();
+  const name = fragment ? `${fragment.path}.${props.name}` : props.name;
+  const fieldArray = useFieldArray({ ...props, name });
 
-export const useFormFieldArray = ({ name: fieldName, ...rest }: UseFormFieldArrayProps) => {
-  const formFieldPathContext = useFormFieldPathContext();
-  const { control } = useFormContext();
-
-  const name = formFieldPathContext ? `${formFieldPathContext.path}.${fieldName}` : fieldName;
-
-  const fieldArray = useFieldArray({
-    name,
-    control,
-  });
-
-  if(map.has(name)) {
-    map.set(name, fieldArray)
-  }
-
-  console.log(map.get(name))
-  
   return {
-    name,
-    ...(map.get(name))
+    ...fieldArray,
+    fragments: fieldArray.fields.map((field, index) => ({
+      id: field.id,
+      index: index,
+      path: `${name}.${index}`,
+      remove: () => fieldArray.remove(index),
+    }))
   };
-}
+};

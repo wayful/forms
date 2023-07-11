@@ -20,10 +20,6 @@ export declare const useFormField: ({ name: fieldName, isRequired, isControlled,
         minLength: ValidationRule<number> | undefined;
         maxLength: ValidationRule<number> | undefined;
     };
-    control: import("react-hook-form").Control<{
-        [x: string]: any;
-    }, any>;
-    register: import("react-hook-form").UseFormRegister<{
-        [x: string]: any;
-    }>;
+    control: import("react-hook-form").Control<import("react-hook-form").FieldValues, any>;
+    register: import("react-hook-form").UseFormRegister<import("react-hook-form").FieldValues>;
 };

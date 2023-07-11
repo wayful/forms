@@ -2,7 +2,7 @@ import { Button, Stack, StackProps } from "@chakra-ui/react";
 
 import { QuestionEdit } from "./QuestionEdit";
 // import { SectionItem, SectionItemKind } from "../types";
-import { FormFieldArray, FormFieldPath } from "@formed/ui";
+// import { FormFieldArray, FormFieldPath } from "@formed/ui";
 
 interface FormEditSectionProps extends StackProps {
   path?: string;
@@ -27,7 +27,7 @@ export const SectionEdit = ({ onRemove, path = 'items', ...props }: FormEditSect
   return (
     <Stack {...props} border='1px solid red' p={3}>
       {onRemove && <Button onClick={onRemove}>Remove Section</Button>}
-      <FormFieldArray name={path}>
+      {/* <FormFieldArray name={path}>
         {(fields, { append }) => (
           <>
             {fields.map(({ key, data, path: prefix, remove }) => {
@@ -38,11 +38,10 @@ export const SectionEdit = ({ onRemove, path = 'items', ...props }: FormEditSect
                 </FormFieldPath>
               );
             })}
-            {/* <Button onClick={() => append({ kind: SectionItemKind.Section, section: { id: Date.now() } })}>Add Section</Button>
-            <Button onClick={() => append({ kind: SectionItemKind.Question, question: { id: Date.now() } })}>Add Question</Button> */}
+            
           </>
         )}
-      </FormFieldArray>
+      </FormFieldArray> */}
     </Stack>
   );
 };

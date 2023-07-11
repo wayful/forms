@@ -1,10 +1,9 @@
-import React from 'react';
+/// <reference types="react" />
 import { StyleProps, HTMLChakraProps } from '@chakra-ui/react';
-import { FormContext, UseFormProps } from './useForm';
-interface FormProps extends UseFormProps, Omit<HTMLChakraProps<"form">, keyof UseFormProps | 'children'> {
+interface FormProps extends HTMLChakraProps<'form'> {
     onError?: () => void;
     onSubmit: (data: any) => void;
-    children: React.ReactNode | ((context: FormContext) => React.ReactNode);
+    children: React.ReactNode | React.ReactNode[];
     _valid?: StyleProps;
     _dirty?: StyleProps;
     _loading?: StyleProps;
@@ -13,5 +12,5 @@ interface FormProps extends UseFormProps, Omit<HTMLChakraProps<"form">, keyof Us
     _submitting?: StyleProps;
     _submitSuccessful?: StyleProps;
 }
-export declare const Form: React.ForwardRefExoticComponent<"form" & React.RefAttributes<FormProps>>;
+export declare const Form: import("react").ForwardRefExoticComponent<FormProps & import("react").RefAttributes<"form">>;
 export default Form;

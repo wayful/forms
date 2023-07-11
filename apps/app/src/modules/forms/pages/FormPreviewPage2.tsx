@@ -38,18 +38,19 @@ const [FormProvider, useFormContext] = createContext<FormContext>({
 })
 
 interface FormProps extends UseFormProps {
+  form: ReturnType<typeof useForm>;
   onError?: () => void;
   onSubmit: (data: any) => void;
-  children: React.ReactNode | ((context: FormContext) => React.ReactNode);
+  children: React.ReactNode;
 }
 
-const Form = ({ onSubmit, onError, children, ...props }: FormProps) => {
-  const form = useForm(props);
+const Form = ({ form, onSubmit, onError, children, ...props }: FormProps) => {
+  // const form = useForm(props);
 
   return (
     <FormProvider value={form}>
       <chakra.form onSubmit={form.handleSubmit(onSubmit, onError)}>
-        {typeof(children) === 'function' ? children(form) : children}
+        {children}
       </chakra.form>
     </FormProvider>
   )
@@ -150,9 +151,18 @@ const FormFragment = ({ children, ...props }: FormFragmentProps) => {
 interface UseFormFieldArrayProps extends UseReactHookFieldArrayProps, UseFormFieldPathProps {}
 
 const useFormFieldArray = (props: UseFormFieldArrayProps) => {
-  const foo = useReactHookFieldArray(props);
+  const array = useReactHookFieldArray(props);
 
-  return foo
+  const fragments = useMemo(() => array.fields.map((field, index) => ({
+    key: field.id,
+    path: `${props.name}.${index}`,
+    remove: () => array.remove(index),
+  })), [array])
+
+  return {
+    ...array,
+    fragments,
+  }
 }
 
 interface Foo {
@@ -208,28 +218,18 @@ const FormFragmentFoo = (props: FormFragmentFooProps) => {
 }
 
 export const FormPreviewPage = () => {
-  const defaultValues = useMemo(() => ({
-    field_1: '1',
-    field_2: '2',
-    // foo: {
-    //   field_fragment_1: '1',
-    //   field_fragment_2: '2',
-    // },
-    // foos: [{
-    //   field_fragment_1: '1',
-    //   field_fragment_2: '2',
-    // }, {
-    //   field_fragment_1: '1',
-    //   field_fragment_2: '2',
-    // }]
-  }), []);
+  const defaultValues = useMemo(() => ({}), []);
+
+  const form = useForm({ defaultValues });
+  const sections = useFormFieldArray({ control: form.control, name: 'sections' });
+
   const handleSubmit = useCallback((data: any) => {
     console.log('handleSubmit', data);
   }, []);
 
   return (
     <Page p={8} direction='row'>
-      <Form defaultValues={defaultValues} onSubmit={handleSubmit}>
+      <Form form={form} onSubmit={handleSubmit}>
 
         <FormField name='field_1' label='Field 1' isRequired>
           <Input type='text' />
@@ -239,14 +239,10 @@ export const FormPreviewPage = () => {
           <Input type='text' />
         </FormField>
 
-        <FormFieldArray name='foos'>
-          {(foos, { append }) => (
-            <>
-              {foos.map(foo => <FormFragmentFoo {...foo} />)}
-              <Button onClick={() => append({})}>Append</Button>
-            </>
-          )}
-        </FormFieldArray>
+        <VStack>
+          {sections.fragments.map(fragment => <FormFragmentFoo {...fragment} />)}
+          <Button onClick={() => sections.append({})}>Append</Button>
+        </VStack>
 
         <Button type='submit'>Submit</Button>
       </Form>

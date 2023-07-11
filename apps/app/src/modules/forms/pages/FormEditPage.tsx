@@ -1,86 +1,80 @@
-import { FaPlus } from "react-icons/fa";
-import { useCallback, useState } from "react";
-import { Form, FormField, FormFieldArray, FormFieldPath, FormFieldWatch, FormProvider } from "@formed/ui";
-import { Box, Button, Heading, Icon, Text, Stack, VStack, HStack, Input,  Container } from "@chakra-ui/react";
-import { useForm, useFieldArray } from 'react-hook-form'
+import { useCallback } from "react";
+import { useForm, useWatch, FormProvider } from 'react-hook-form';
+import { Stack, Container, Button, VStack, Heading, Box, Icon, Text, HStack, Flex } from "@chakra-ui/react";
+import { useFormFieldArray, Form, FormFragmentProvider } from "@formed/ui";
 
-import { Page } from "../../../components";
-import { IForm, IQuestion, IQuestionType, ISection, QuestionTypeKind, form as _form } from "../../../types";
 import { forms } from "../../../form/data";
-import { QuestionEdit } from "../components/QuestionEdit";
+
+import { Page } from "~/components";
+import { SectionFormFragment } from "../components";
+import { FaPlus } from "react-icons/fa";
+import { ISection } from "~/types";
+
+// interface SectionsControllerProps {
+//   // sections: ISection[];
+//   remove: (index: number) => void;
+//   append: (section: ISection) => void;
+// }
+
+// const SectionsController = ({ append, remove }: SectionsControllerProps) => {
+//   const sections = useWatch({ name: 'sections' });
+  
+//   console.log(sections);
+
+//   return (
+    
+//   )
+// }
+
+// --
 
 interface FormEditPageProps{
   create?: boolean
 }
 
-interface SectionsControllerProps {
-  sections: ISection[];
-  remove: (index: number) => void;
-  append: (section: ISection) => void;
-}
-
-const SectionsController = ({ sections, append, remove }: SectionsControllerProps) => (
-  <VStack align='start' width='240px'>
-    <Heading size='md'>Sections</Heading>
-    {sections.map((section => <Box key={section.id}>{section.name}</Box>))}
-    <Button size='sm' variant='ghost' leftIcon={<Icon as={FaPlus} />} onClick={() => append({ id: Date.now().toString(), name: 'New Section', questions: [] })}>Section</Button>
-  </VStack>
-)
-
-
-const SectionEdit = ({ control, remove }) => {
-  const questions = useFieldArray({ control, name: 'questions' })
-  
-  return (
-    <Stack p={6} spacing={6} borderRadius={24} border='1px' borderColor='gray.300' bg='white'>
-      <FormField name="name" label='Section name' isRequired>
-        <Input type='text' />
-      </FormField>
-
-      <FormField name="description" label='Section Description' isRequired>
-        <Input type='text' />
-      </FormField>
-
-      <HStack>
-        <Button>Duplicate</Button>
-        <Button variant='ghost' onClick={remove}>Delete</Button>
-      </HStack>
-      {/* <FormFieldArray name='presentation.sections'>
-        {(questions, { append, remove }) => questions.map((question, index) =>
-          <QuestionEdit key={question.id} question={question} onRemove={() => remove(index)} />
-        )}
-      </FormFieldArray> */}
-      <Button onClick={() => questions.append({ type: { kind: QuestionTypeKind.Number } })}>Add</Button>
-    </Stack>
-  )
-}
-
 export const FormEditPage = ({ create = false }: FormEditPageProps) => {
-  const [form, setForm] = useState<IForm>(forms[0]);
+  const form = useForm({ defaultValues: forms[0] });
+  const sections = useFormFieldArray({ name: 'sections', control: form.control });
+  const handleSubmit = useCallback((data: any) => console.log('handleSubmit', data), []);
 
-  const { control, register } = useForm({ defaultValues: forms[0] });
-  const sections = useFieldArray<ISection>({ control, name: 'sections' })
+  const addSection = useCallback(() => sections.append({ id: Date.now().toString(), name: 'New Section', questions: [] }), [sections.append])
 
-
-  const handleSubmit = useCallback((form: IForm) => {
-    console.log('handleSubmit', form);
-    // setForm(form);
-  }, []);
-  
   return (
     <Page p={8} direction='row'>
-      <Form defaultValues={form} onSubmit={handleSubmit}>
-        <SectionsController sections={sections.fields} append={sections.append} />
-        <Container maxW='1240px'>
-          <Stack>  
-            {sections.fields.map((section, index) =>
-              <FormFieldPath key={section.id} path={`sections.${index}`}>
-                <SectionEdit control={control} index={index} />
-              </FormFieldPath>
-            )}
-          </Stack>
-        </Container>  
-      </Form>
+      <FormProvider {...form}>
+        <Form onSubmit={handleSubmit}>
+          <HStack align='flex-start' flex={1}>
+            <VStack align='start' width='240px'>
+              <Heading size='md'>Sections</Heading>
+              {form.watch('sections').map(((section, index) => (
+                <HStack key={section.id}>
+                  <Text>{section.name}</Text>
+                </HStack>
+              )))}
+              <Button size='sm' variant='ghost' leftIcon={<Icon as={FaPlus} />} onClick={addSection}>Section</Button>
+              <Button type="submit">Submit</Button>
+            </VStack>
+            <Flex flex={5}>
+              <Container maxW='920px'>
+                <Stack spacing={6}>
+                  {sections.fragments.map(fragment => (
+                    <FormFragmentProvider key={fragment.id} path={fragment.path}>
+                      <SectionFormFragment remove={fragment.remove} />
+                    </FormFragmentProvider>
+                  ))}
+                  <Flex justify='center'>
+                    <Button bg="white" onClick={addSection}>Add Section</Button>
+                  </Flex>
+                </Stack>
+              </Container>
+            </Flex>
+            <VStack align='stretch' flex={1} bg='white' p={6} borderRadius='24px' border='1px solid' borderColor='gray.300'>
+              <Button variant='outline' type="submit">Preview</Button>
+              <Button variant='solid' colorScheme="blue" type="submit">Publish</Button>
+            </VStack>
+          </HStack>
+        </Form>
+      </FormProvider>
     </Page>
   )
 };

@@ -1,5 +1,5 @@
 
-import { FormField, FormFieldObject, FormProvider, useForm } from "@formed/ui";
+import { FormField } from "@formed/ui";
 import { Button, Divider, HStack, Input, Stack, StackProps, Switch } from "@chakra-ui/react";
 
 import { QuestionTypeSelect } from "~/components";
@@ -61,9 +61,9 @@ interface QuestionEditProps extends StackProps {
 }
 
 export const QuestionEdit = ({ question, onRemove, ...props }: QuestionEditProps) => {
-  const formContext = useForm({ defaultValues: question });
+  // const formContext = useForm({ defaultValues: question });
   return (
-    <FormProvider value={formContext}>
+    // <FormProvider value={formContext}>
       <Stack {...props} p={6} borderRadius={12} border='1px' borderColor='gray.100' bg='white'>
         <HStack align='start'>
           <FormField name="text" label='Question' isRequired flexGrow={1}>
@@ -83,7 +83,7 @@ export const QuestionEdit = ({ question, onRemove, ...props }: QuestionEditProps
 
         <Divider />
 
-        <FormFieldObject name='type'>
+        {/* <FormFieldObject name='type'>
           {(type: TQuestionType) => {
             switch (type.kind) {
               case QuestionTypeKind.Number:
@@ -96,13 +96,13 @@ export const QuestionEdit = ({ question, onRemove, ...props }: QuestionEditProps
                 return <QuestionTypeOptionsEdit /> 
             }
           }}
-        </FormFieldObject>
+        </FormFieldObject> */}
         <Divider />
         <HStack>
           <Button onClick={onRemove}>Remove</Button>
           <Button onClick={onRemove}>Duplicate</Button>
         </HStack>
       </Stack>
-    </FormProvider>
+    // </FormProvider>
   );
 }

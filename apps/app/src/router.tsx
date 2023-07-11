@@ -2,8 +2,7 @@ import { Navigate, Route, createBrowserRouter, createRoutesFromElements } from '
 
 import { MainLayout } from './layouts';
 import { SignInPage, SignUpPage } from '~/pages';
-import { FormListPage } from './modules/forms';
-import { FormEditPage } from './modules/forms';
+import { FormListPage, FormEditPage } from './modules/forms';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
