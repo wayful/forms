@@ -1,39 +1,22 @@
 import { useCallback } from "react";
-import { useForm, useWatch, FormProvider } from 'react-hook-form';
-import { Stack, Container, Button, VStack, Heading, Box, Icon, Text, HStack, Flex } from "@chakra-ui/react";
-import { useFormFieldArray, Form, FormFragmentProvider } from "@formed/ui";
-
-import { forms } from "../../../form/data";
+import { FaPlus } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import { useForm, FormProvider } from 'react-hook-form';
+import { useFormFieldArray, Form, FormFragmentProvider, FormField } from "@formed/ui";
+import { Stack, Container, Button, VStack, Heading, Icon, Text, HStack, Flex, Input } from "@chakra-ui/react";
 
 import { Page } from "~/components";
+
+import { forms } from "../data";
 import { SectionFormFragment } from "../components";
-import { FaPlus } from "react-icons/fa";
-import { ISection } from "~/types";
-
-// interface SectionsControllerProps {
-//   // sections: ISection[];
-//   remove: (index: number) => void;
-//   append: (section: ISection) => void;
-// }
-
-// const SectionsController = ({ append, remove }: SectionsControllerProps) => {
-//   const sections = useWatch({ name: 'sections' });
-  
-//   console.log(sections);
-
-//   return (
-    
-//   )
-// }
-
-// --
 
 interface FormEditPageProps{
   create?: boolean
 }
 
 export const FormEditPage = ({ create = false }: FormEditPageProps) => {
-  const form = useForm({ defaultValues: forms[0] });
+  const { id } = useParams();
+  const form = useForm({ defaultValues: forms.find(form => form.id === id) });
   const sections = useFormFieldArray({ name: 'sections', control: form.control });
   const handleSubmit = useCallback((data: any) => console.log('handleSubmit', data), []);
 
@@ -44,7 +27,7 @@ export const FormEditPage = ({ create = false }: FormEditPageProps) => {
       <FormProvider {...form}>
         <Form onSubmit={handleSubmit}>
           <HStack align='flex-start' flex={1}>
-            <VStack align='start' width='240px'>
+            <VStack position='sticky' top='50px' align='start' width='240px'>
               <Heading size='md'>Sections</Heading>
               {form.watch('sections').map(((section, index) => (
                 <HStack key={section.id}>
@@ -68,7 +51,10 @@ export const FormEditPage = ({ create = false }: FormEditPageProps) => {
                 </Stack>
               </Container>
             </Flex>
-            <VStack align='stretch' flex={1} bg='white' p={6} borderRadius='24px' border='1px solid' borderColor='gray.300'>
+            <VStack position='sticky' top='50px' align='stretch' minWidth='350px' flex={1} bg='white' p={6} borderRadius='24px' border='1px solid' borderColor='gray.300'>
+              <FormField name='name' label='Form name' isRequired>
+                <Input type='text' />
+              </FormField>
               <Button variant='outline' type="submit">Preview</Button>
               <Button variant='solid' colorScheme="blue" type="submit">Publish</Button>
             </VStack>

@@ -1,11 +1,10 @@
-
-import { FormField, FormFieldPath, FormFieldWatch, FormFragmentProvider, useFormFieldArray } from "@formed/ui";
-import { Button, Checkbox, Divider, Flex, HStack, Icon, IconButton, Input, Stack, StackProps, Switch, VStack } from "@chakra-ui/react";
-
-import { QuestionTypeSelect } from "~/components";
-import { TQuestionType, QuestionTypeKind, IQuestion } from "~/types";
-import { Fragment, useCallback } from "react";
+import { useCallback } from "react";
 import { FaTrash } from "react-icons/fa";
+import { FormField, FormFieldPath, FormFieldWatch, FormFragmentProvider, useFormFieldArray } from "@formed/ui";
+import { Button, Checkbox, Divider, Flex, HStack, Icon, IconButton, Input, Stack, StackProps, Switch, Text } from "@chakra-ui/react";
+
+import { QuestionTypeKind } from "~/types";
+import { QuestionTypeSelect } from "~/components";
 
 const QuestionTypeNumberEdit = () => {
   return (
@@ -50,14 +49,20 @@ const QuestionTypeBooleanEdit = () => {
 }
 
 const QuestionTypeOptionsEdit = () => {
-  const options = useFormFieldArray({ name: 'options '})
+  const options = useFormFieldArray({ name: 'options' })
   return (
     <Stack spacing={3}>
+      <Text fontWeight='medium'>Options</Text>
       {options.fragments.map(fragment => (
         <FormFragmentProvider key={fragment.id} path={fragment.path}>
           <HStack spacing={4}>
             <Checkbox />
-            <Input />
+            <FormField flex={1} name="label" isRequired>
+              <Input />
+            </FormField>
+            <FormField flex={0} minW='50px' name="value" isRequired>
+              <Input />
+            </FormField>
             <IconButton onClick={fragment.remove} placeholder='Insert Option' aria-label="remove" variant='ghost' icon={<Icon as={FaTrash} />} />
           </HStack>
         </FormFragmentProvider>
@@ -89,11 +94,11 @@ export const QuestionFormFragment = ({ remove, ...props }: QuestionFormFragmentP
   return (
     <Stack {...props} p={6} spacing={6} borderRadius={12} border='1px' borderColor='gray.100' bg='white'>
       <HStack align='start'>
-        <FormField name="text" label='Question' isRequired flexGrow={1}>
+        <FormField name="text" label='Question' isRequired flex={1}>
           <Input type='text' />
         </FormField>
 
-        <FormField name="required" label='Required' flex={1}>
+        <FormField name="required" label='Required' flex={0}>
           <Switch />
         </FormField>
       </HStack>

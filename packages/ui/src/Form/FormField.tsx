@@ -15,7 +15,7 @@ export const FormField = (props: FormFieldProps) => {
   const { label, children, valueAs, isRequired, minLength, maxLength, isControlled = false, ...rest } = props
 
   return (
-    <FormControl {...rest} isInvalid={!!error}>
+    <FormControl flex={1} {...rest} width='unset' isInvalid={!!error}>
       <Flex justify='space-between'>
         {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
         {/* {(minLength || maxLength) && <Text>{watch(name, '').length}/{maxLength}</Text>} */}

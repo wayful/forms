@@ -695,7 +695,7 @@ const Zr = Rr(({
 }, rt = (n) => {
   var w;
   const { name: a, error: u, rules: s, register: v, control: p } = Nr(n), { label: g, children: d, valueAs: c, isRequired: y, minLength: h, maxLength: E, isControlled: C = !1, ..._ } = n;
-  return /* @__PURE__ */ R.jsxs(Tr, { ..._, isInvalid: !!u, children: [
+  return /* @__PURE__ */ R.jsxs(Tr, { flex: 1, ..._, width: "unset", isInvalid: !!u, children: [
     /* @__PURE__ */ R.jsx(Pr, { justify: "space-between", children: g && /* @__PURE__ */ R.jsx(wr, { htmlFor: a, children: g }) }),
     C ? /* @__PURE__ */ R.jsx(_r, { name: a, rules: s, control: p, render: ({ field: F }) => N.cloneElement(N.Children.only(d), F) }) : N.cloneElement(N.Children.only(d), v(a, s)),
     u && /* @__PURE__ */ R.jsx(Or, { children: /* @__PURE__ */ R.jsxs(jr, { children: [

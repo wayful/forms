@@ -3,8 +3,9 @@ import { FaChevronDown, FaPlus } from 'react-icons/fa';
 import { Button, Card, CardBody, CardFooter, CardHeader, Container, Icon, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 import { Page } from "~/components";
+
+import { forms } from "../data";
 import { FormList } from "../components";
-import { forms } from "../../../form/data";
 
 const SortByMenu = () => (
   <Menu>
